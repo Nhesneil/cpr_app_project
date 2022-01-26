@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,22 +31,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
-
-  List<double>? _accelerometerValues;// question mark means that value can be null
-  List<double>? _userAccelerometerValues;//.... means you dont need to initialize it
+  List<double>?
+      _accelerometerValues; // question mark means that value can be null
+  List<double>?
+      _userAccelerometerValues; //.... means you dont need to initialize it
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
 
-  Color backGround=Colors.green;
+  Color backGround = Colors.green;
 
   @override
   Widget build(BuildContext context) {
     final accelerometer =
-    _accelerometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
+        _accelerometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
     final userAccelerometer = _userAccelerometerValues
         ?.map((double v) => v.toStringAsFixed(1))
         .toList();
+
     return Scaffold(
       backgroundColor: backGround,
       appBar: AppBar(
@@ -56,22 +55,29 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('Accelerometer: $accelerometer'),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('UserAccelerometer: $userAccelerometer'),
-              ],
+          // Padding(
+          //   padding: const EdgeInsets.all(16.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: <Widget>[
+          //       Text('Accelerometer: $accelerometer'),
+          //     ],
+          //   ),
+          // ),
+          Expanded(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
+              child: Center(
+                child: Text(
+                  '$userAccelerometer',
+                  style: const TextStyle(
+                    backgroundColor: Colors.white,
+                    color: Colors.black,
+                    fontSize: 100.0,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -90,36 +96,29 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _streamSubscriptions.add(
-      accelerometerEvents.listen(
-            (AccelerometerEvent event) {
-          setState(() {
-
-            _accelerometerValues = <double>[event.x, event.y, event.z];
-
-
-          });
-        },
-      ),
-    );
+    // _streamSubscriptions.add(
+    //   accelerometerEvents.listen(
+    //         (AccelerometerEvent event) {
+    //       setState(() {
+    //
+    //         _accelerometerValues = <double>[event.x, event.y, event.z];
+    //
+    //
+    //       });
+    //     },
+    //   ),
+    // );
     _streamSubscriptions.add(
       userAccelerometerEvents.listen(
-            (UserAccelerometerEvent event) {
+        (UserAccelerometerEvent event) {
           setState(() {
+            _userAccelerometerValues = <double>[event.y];
 
-            _userAccelerometerValues = <double>[event.x, event.y, event.z];
-
-            if (event.y<3){
-              backGround=Colors.red;
-
-
-            }else{
-
-              backGround=Colors.green;
-
+            if (event.y < 3) {
+              backGround = Colors.red;
+            } else {
+              backGround = Colors.green;
             }
-
-
           });
         },
       ),

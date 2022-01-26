@@ -1,16 +1,12 @@
-# accelerometer
+# Mobile application for CPR
 
-A new Flutter project.
+The app will not only guide the user on how to do CPR (Cardiopulmonary resuscitation) , but will also give the user a feedback on the depth of his/her compressions.
 
-## Getting Started
+## Features
+1.	Depth of compressions
+-	The accelerometer data will be processed to provide accurate feedback to the user
+-	The feedback will be through a pre-recorded speech played by the phone saying, "Compress more!"
+-	This is an important feature since performing each compressions have a minimum depth to be effective
+2.	Automatic sending of an emergency signal to authorities
+-	
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

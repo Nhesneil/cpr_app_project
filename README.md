@@ -17,4 +17,4 @@ The mobile app will not only guide the user on how to do CPR (Cardiopulmonary re
 *	As soon the application gets opened, data such as the location of the user will be sent to the authorities
 ## Accelerometer Data into Displacements
 To give the user feedback of each depth of compressions, the accelerometer needs to be accessed from the phone. The data will then be stored and transformed into displacements using the spectral method.
-Please see [a link](https://github.com/Nhesneil/cpr_app_project/tree/master/process_data) for more information.
+Please see [processed data folder](https://github.com/Nhesneil/cpr_app_project/tree/master/process_data) for more information.

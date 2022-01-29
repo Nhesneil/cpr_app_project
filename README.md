@@ -8,7 +8,7 @@
 •	[Accelerometer Data into Displacements](#accelerometer-data-into-displacements)
 
 ## Project
-Please download the entire folder and load project on flutter from Google. Code (main.dart) is under [lib](https://github.com/Nhesneil/cpr_app_project/blob/master/lib/main.dart)
+Please download the entire folder and load project on flutter(made by Google). Code (main.dart) is under [lib](https://github.com/Nhesneil/cpr_app_project/blob/master/lib/main.dart)
 
 ## Purpose
 

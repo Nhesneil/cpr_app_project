@@ -1,6 +1,8 @@
 ## Table of contents
 •	[Purpose](#purpose)
+
 •	[Features](#features)
+
 •	[Accelerometer Data into Displacements](#accelerometer-data-into-displacements)
 ## Purpose
 

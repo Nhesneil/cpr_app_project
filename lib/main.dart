@@ -26,7 +26,6 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
 Color backGround = Colors.red;
 
 class _MyHomePageState extends State<MyHomePage> {

@@ -5,17 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 //import 'package:async/async.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 const double threshold = 2;
+int number=0;
+int pausenumber=0;
+const length = Duration(milliseconds:500);
 
 void main() {
   runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         colorScheme: const ColorScheme.light(primary: Color(0xFF0A0E21)),
         scaffoldBackgroundColor: const Color(0xFF0A0E21),
@@ -58,6 +64,9 @@ class _MyHomePageState extends State<MyHomePage> {
   //   return backGround;
   // }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     final accelerometer =
@@ -65,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final userAccelerometer = _userAccelerometerValues
         .map((double v) => v.toStringAsFixed(1))
         .toList();
+
 
     return Scaffold(
       //backgroundColor: feedback(),
@@ -85,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return InfoPage();
                     }));
-                  },
+                    },
                   child: const Icon(FontAwesomeIcons.infoCircle,
                   size: 35),
                 ),
@@ -129,9 +139,30 @@ class _MyHomePageState extends State<MyHomePage> {
         (UserAccelerometerEvent event) {
           setState(() {
             _userAccelerometerValues = <double>[event.y];
+            if (event.y>threshold){
+              number=1;
+            }
           });
         },
       ),
     );
+    Timer.periodic(length, (Timer t)
+    {
+      //print('timer1');
+      if (number==1){
+        //print('timer2');
+        //print('pausenumber: $pausenumber');
+        if(pausenumber==0){
+         // print('timer3');
+          Timer.periodic(length, (Timer t)
+          {
+         //  print('timer4');
+            final player = AudioCache();
+            player.play('beep-3.wav');
+          });
+        }
+        pausenumber=1;
+      }
+    });
   }
 }

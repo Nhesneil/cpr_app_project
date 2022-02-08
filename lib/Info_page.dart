@@ -11,20 +11,21 @@ class InfoPage extends StatelessWidget {
       body: SafeArea(
           child: Center(
             child: Column(
-
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                   child: Text(information,
                     style: const TextStyle(fontSize: 25,),
                   ),
                 ),
-                Image.asset(
-                  'images/phone_position.png',
-                  height:250,
-                  width: 250,
+                FittedBox(
+                  fit: BoxFit.fill,
+                  child: Image.asset(
+                    'images/phone_position.png',
+                    height:200,
+                    width: 200,
+                  ),
                 ),
               ],
             ),

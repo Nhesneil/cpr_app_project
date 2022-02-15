@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:accelerometer/Cancel_button.dart';
 import 'package:accelerometer/Info_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,20 @@ import 'package:sensors_plus/sensors_plus.dart';
 //import 'package:async/async.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'Cancel_button.dart';
 
 const double threshold = 2;
 int number=0;
 int pausenumber=0;
+int timenumber=0;
+int number_a=0;
+int pausenumber_a=0;
+
+
+
 const length = Duration(milliseconds:500);
+const length_accel = Duration(milliseconds:5);
+const length_accel1 = Duration(milliseconds:5000);
 
 void main() {
   runApp(MyApp());
@@ -45,7 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
       _accelerometerValues; // question mark means that value can be null
   List<double> _userAccelerometerValues = [
     0
-  ]; //.... means you dont need to initialize it
+  ];
+  List  <double> userAccelerometerValues_1=[];
+
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   //
   // Color backGround = Colors.red; //starting value, can be declared instead class
@@ -117,6 +129,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+            Expanded(child: Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: LoadingButton(),
+              // child: MaterialButton(
+              //   child: Text(
+              //     'CANCEL'
+              //   ),
+              //   onPressed: (){
+              //     timenumber=1;
+              //   },
+              // )
+            ))
           ],
         ),
       ),
@@ -136,13 +160,34 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _streamSubscriptions.add(
       userAccelerometerEvents.listen(
-        (UserAccelerometerEvent event) {
+        (UserAccelerometerEvent event) async{
           setState(() {
             _userAccelerometerValues = <double>[event.y];
-            if (event.y>threshold){
-              number=1;
-            }
+
           });
+          if (event.y>threshold){
+            timenumber=0;
+            number=1;
+            number_a=1;
+          }
+          // Timer.periodic(length_accel, (Timer t)
+          // {
+          //   //print('timer1');
+          //   if (number_a==1){
+          //     //print('timer2');
+          //     //print('pausenumber: $pausenumber');
+          //     if(pausenumber_a==0){
+          //       // print('timer3');
+          //       Timer.periodic(length_accel1, (Timer t)// to initialize once only
+          //       {
+          //         //  print('timer4');
+          //         userAccelerometerValues_1.add(event.y);
+          //         print(userAccelerometerValues_1);
+          //       });
+          //     }
+          //     pausenumber_a=1;
+          //   }
+          // });
         },
       ),
     );
@@ -154,8 +199,13 @@ class _MyHomePageState extends State<MyHomePage> {
         //print('pausenumber: $pausenumber');
         if(pausenumber==0){
          // print('timer3');
-          Timer.periodic(length, (Timer t)
+
+          Timer.periodic(length, (Timer t)// to initialize once only
           {
+            if(timenumber==1){
+              t.cancel();
+            }
+
          //  print('timer4');
             final player = AudioCache();
             player.play('beep-3.wav');
@@ -166,3 +216,4 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 }
+

@@ -44,12 +44,6 @@ class CancelButtonState extends State<CancelButton>
           feed.oneTimeActivation=false;
           feed.cancelTimer=true;
 
-          // number = 0;
-          // pauseNumber = 0;
-          // timeNumber = 1;
-          // numberFeedback = 0;
-          // pauseNumberFeedback = 0;
-          // timeNumberFeedback = 0;
         }},
       child:Padding(
         padding: const EdgeInsets.all(8.0),

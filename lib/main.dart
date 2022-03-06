@@ -118,14 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
-    int number = 0;
-    int pauseNumber = 0;
-    int timeNumber = 0;
-    int numberFeedback = 0;
-    int pauseNumberFeedback = 0;
-    int timeNumberFeedback = 0;
-
     _streamSubscriptions.add(
       userAccelerometerEvents.listen(
         (UserAccelerometerEvent event) {
@@ -136,15 +128,10 @@ class _MyHomePageState extends State<MyHomePage> {
             beep.trigger = true;
             beep.cancelTimer = false;
 
-            timeNumber = 0;
-            number = 1;
-
-
             // number_a=1;
             feed.trigger=true;
             feed.cancelTimer=false;
-            timeNumberFeedback = 0;
-            numberFeedback = 1;
+
           }
           // Timer.periodic(length_accel, (Timer t)
           // {
@@ -167,47 +154,9 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
-    Timer.periodic(length, (Timer t) {
-      beep.metronome();
-      // if (number==1){
-      //   if(pauseNumber==0){
-      //     Timer.periodic(length, (Timer t)// to initialize once only
-      //     {
-      //       if(timeNumber==1){
-      //         t.cancel();
-      //       }
-      //       final player = AudioCache();
-      //       player.play('beep-3.wav');
-      //
-      //     });
-      //   }
-      //   pauseNumber=1;
-      // }
-    });
 
-    // double maxAccelerometerValue = 0;
-
-    Timer.periodic(length, (Timer t) {
-
-      feed.feedback();
-      // if (numberFeedback == 1) {
-      //   if (pauseNumberFeedback == 0) {
-      //     Future.delayed(const Duration(seconds: 3), () {
-      //       Timer.periodic(lengthFeedback, (Timer t) {
-      //         if (timeNumberFeedback == 1) {
-      //           t.cancel();
-      //         }
-      //         if (maxAccelerometerValue < (threshold)) {
-      //           final player = AudioCache();
-      //           player.play('1645293161905-voicemaker.in-speech.mp3');
-      //         }
-      //         maxAccelerometerValue = 0;
-      //       });
-      //     });
-      //   }
-      //   pauseNumberFeedback = 1;
-      // }
-    });
+    Timer.periodic(length, (Timer t) {beep.metronome();});
+    Timer.periodic(length, (Timer t) {feed.feedback();});
 
     userAccelerometerEvents.listen((UserAccelerometerEvent event) {
       if (threshold < event.y) {

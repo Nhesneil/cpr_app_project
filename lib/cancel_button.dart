@@ -4,12 +4,12 @@ import 'main.dart';
 const double height=60.0;
 const double width=60.0;
 
-class LoadingButton extends StatefulWidget {
+class CancelButton extends StatefulWidget {
   @override
-  LoadingButtonState createState() => LoadingButtonState();
+  CancelButtonState createState() => CancelButtonState();
 }
 
-class LoadingButtonState extends State<LoadingButton>
+class CancelButtonState extends State<CancelButton>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
@@ -20,8 +20,8 @@ class LoadingButtonState extends State<LoadingButton>
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     controller.addListener(() {
-      setState(() {});
-    });
+      setState(() {});// setstate to rebuild in build
+    });//Listener to get the controller value (usually from 0 to 1)
   }
 
   @override
@@ -33,15 +33,25 @@ class LoadingButtonState extends State<LoadingButton>
           controller.reverse();
 
         }
-        if(controller.value==1){
+        if(controller.value==1) {
           controller.reset();
-          number=0;
-          pausenumber=0;
-          timenumber=1;
 
-        }
-      },
-      child: Padding(
+          beep.trigger=false;
+          beep.oneTimeActivation=false;
+          beep.cancelTimer=true;
+
+          feed.trigger=false;
+          feed.oneTimeActivation=false;
+          feed.cancelTimer=true;
+
+          // number = 0;
+          // pauseNumber = 0;
+          // timeNumber = 1;
+          // numberFeedback = 0;
+          // pauseNumberFeedback = 0;
+          // timeNumberFeedback = 0;
+        }},
+      child:Padding(
         padding: const EdgeInsets.all(8.0),
         child: Stack(
           alignment: Alignment.center,

@@ -1,30 +1,35 @@
 import 'dart:async';
-import 'package:accelerometer/Cancel_button.dart';
-import 'package:accelerometer/Info_page.dart';
+import 'package:accelerometer/cancel_button.dart';
+import 'package:accelerometer/info_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 //import 'package:async/async.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'Cancel_button.dart';
+import 'cancel_button.dart';
+import 'constants.dart';
+import 'play_audio.dart';
 
-const double threshold = 2;
-int number=0;
-int pausenumber=0;
-int timenumber=0;
-int number_a=0;
-int pausenumber_a=0;
+// int number_a=0;
+// int pausenumber_a=0;
 
+PlayAudio beep = PlayAudio(
+  duration: length,
+  audioSound: 'beep-3.wav',
+  feedbackDelay: const Duration(seconds: 0),
+);
 
-
-const length = Duration(milliseconds:500);
-const length_accel = Duration(milliseconds:5);
-const length_accel1 = Duration(milliseconds:5000);
+PlayAudio feed = PlayAudio(
+  duration: lengthFeedback,
+  audioSound: '1645293161905-voicemaker.in-speech.mp3',
+  feedbackDelay: feedbackDelay,
+  threshold: threshold,
+);
 
 void main() {
   runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -42,57 +47,21 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  //MyHomePage({Key? key, this.title}) : super(key: key);
-
-  //final String? title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<double>?
-      _accelerometerValues; // question mark means that value can be null
-  List<double> _userAccelerometerValues = [
-    0
-  ];
-  List  <double> userAccelerometerValues_1=[];
-
+  List<double> _userAccelerometerValues = [0];
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
-  //
-  // Color backGround = Colors.red; //starting value, can be declared instead class
-  //
-  // Color feedback() {
-  //   setState(() {
-  //     if (_userAccelerometerValues[0] < threshold) {
-  //       if (_userAccelerometerValues[0] > 1) {
-  //         backGround = Colors.red;
-  //       }
-  //     }
-  //     if (_userAccelerometerValues[0] > threshold) {
-  //       backGround = Colors.green;
-  //     }
-  //   });
-  //   return backGround;
-  // }
-
-
-
 
   @override
   Widget build(BuildContext context) {
-    final accelerometer =
-        _accelerometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
     final userAccelerometer = _userAccelerometerValues
         .map((double v) => v.toStringAsFixed(1))
         .toList();
 
-
     return Scaffold(
-      //backgroundColor: feedback(),
-      // appBar: AppBar(
-      //
-      // ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -101,15 +70,14 @@ class _MyHomePageState extends State<MyHomePage> {
               margin: const EdgeInsets.all(10),
               child: Align(
                 alignment: Alignment.topRight,
-
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return InfoPage();
                     }));
-                    },
-                  child: const Icon(FontAwesomeIcons.infoCircle,
-                  size: 35),
+                  },
+                  child: const Icon(FontAwesomeIcons.infoCircle, size: 35),
                 ),
               ),
             ),
@@ -121,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text(
                     '$userAccelerometer',
                     style: const TextStyle(
-                      //backgroundColor: Colors.white,
                       color: Colors.white,
                       fontSize: 100.0,
                     ),
@@ -129,17 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Expanded(child: Align(
+            Expanded(
+                child: Align(
               alignment: FractionalOffset.bottomCenter,
-              child: LoadingButton(),
-              // child: MaterialButton(
-              //   child: Text(
-              //     'CANCEL'
-              //   ),
-              //   onPressed: (){
-              //     timenumber=1;
-              //   },
-              // )
+              child: CancelButton(),
             ))
           ],
         ),
@@ -158,17 +118,33 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    int number = 0;
+    int pauseNumber = 0;
+    int timeNumber = 0;
+    int numberFeedback = 0;
+    int pauseNumberFeedback = 0;
+    int timeNumberFeedback = 0;
+
     _streamSubscriptions.add(
       userAccelerometerEvents.listen(
-        (UserAccelerometerEvent event) async{
+        (UserAccelerometerEvent event) {
           setState(() {
             _userAccelerometerValues = <double>[event.y];
-
           });
-          if (event.y>threshold){
-            timenumber=0;
-            number=1;
-            number_a=1;
+          if (event.y > threshold) {
+            beep.trigger = true;
+            beep.cancelTimer = false;
+
+            timeNumber = 0;
+            number = 1;
+
+
+            // number_a=1;
+            feed.trigger=true;
+            feed.cancelTimer=false;
+            timeNumberFeedback = 0;
+            numberFeedback = 1;
           }
           // Timer.periodic(length_accel, (Timer t)
           // {
@@ -191,29 +167,52 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
-    Timer.periodic(length, (Timer t)
-    {
-      //print('timer1');
-      if (number==1){
-        //print('timer2');
-        //print('pausenumber: $pausenumber');
-        if(pausenumber==0){
-         // print('timer3');
+    Timer.periodic(length, (Timer t) {
+      beep.metronome();
+      // if (number==1){
+      //   if(pauseNumber==0){
+      //     Timer.periodic(length, (Timer t)// to initialize once only
+      //     {
+      //       if(timeNumber==1){
+      //         t.cancel();
+      //       }
+      //       final player = AudioCache();
+      //       player.play('beep-3.wav');
+      //
+      //     });
+      //   }
+      //   pauseNumber=1;
+      // }
+    });
 
-          Timer.periodic(length, (Timer t)// to initialize once only
-          {
-            if(timenumber==1){
-              t.cancel();
-            }
+    // double maxAccelerometerValue = 0;
 
-         //  print('timer4');
-            final player = AudioCache();
-            player.play('beep-3.wav');
-          });
-        }
-        pausenumber=1;
+    Timer.periodic(length, (Timer t) {
+
+      feed.feedback();
+      // if (numberFeedback == 1) {
+      //   if (pauseNumberFeedback == 0) {
+      //     Future.delayed(const Duration(seconds: 3), () {
+      //       Timer.periodic(lengthFeedback, (Timer t) {
+      //         if (timeNumberFeedback == 1) {
+      //           t.cancel();
+      //         }
+      //         if (maxAccelerometerValue < (threshold)) {
+      //           final player = AudioCache();
+      //           player.play('1645293161905-voicemaker.in-speech.mp3');
+      //         }
+      //         maxAccelerometerValue = 0;
+      //       });
+      //     });
+      //   }
+      //   pauseNumberFeedback = 1;
+      // }
+    });
+
+    userAccelerometerEvents.listen((UserAccelerometerEvent event) {
+      if (threshold < event.y) {
+        feed.maxAccelerometerValue = event.y;
       }
     });
   }
 }
-

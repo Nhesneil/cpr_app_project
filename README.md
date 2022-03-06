@@ -19,6 +19,9 @@ The mobile app will not only guide the user on how to do CPR (Cardiopulmonary re
 *	The accelerometer data will be processed to provide accurate feedback to the user
 *	The feedback will be through a pre-recorded speech played by the phone saying, "Compress more!"
 *	This is an important feature since performing each compressions have a minimum depth to be effective
+*	TO DO:
+  *	Back end for feedback accuracy
+  *	Front end for user communication (Implemented)
 2.	Rate of compression guide (Implemented)
 *	The beats per minute(bpm) will be presented through a metronome at a fixed rate
 3. 	Signal to be sent to authorities (Yet to be implemented)

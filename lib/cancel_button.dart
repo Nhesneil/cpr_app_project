@@ -18,7 +18,7 @@ class CancelButtonState extends State<CancelButton>
     super.initState();
 
     controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration:const Duration(seconds: 1));
     controller.addListener(() {
       setState(() {});// setstate to rebuild in build
     });//Listener to get the controller value (usually from 0 to 1)
@@ -37,11 +37,11 @@ class CancelButtonState extends State<CancelButton>
           controller.reset();
 
           beep.trigger=false;
-          beep.oneTimeActivation=false;
+          beep.oneTimeActivation=true;
           beep.cancelTimer=true;
 
           feed.trigger=false;
-          feed.oneTimeActivation=false;
+          feed.oneTimeActivation=true;
           feed.cancelTimer=true;
 
         }},

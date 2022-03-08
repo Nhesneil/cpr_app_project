@@ -5,9 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sensors_plus/sensors_plus.dart';
-//import 'package:async/async.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'cancel_button.dart';
 import 'constants.dart';
 import 'play_audio.dart';
@@ -122,9 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
       userAccelerometerEvents.listen(
         (UserAccelerometerEvent event) {
           setState(() {
-            _userAccelerometerValues = <double>[event.y];
+            _userAccelerometerValues = <double>[event.z];
           });
-          if (event.y > threshold) {
+          if (event.z > threshold) {
             beep.trigger = true;
             beep.cancelTimer = false;
 
@@ -159,8 +157,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Timer.periodic(length, (Timer t) {feed.feedback();});
 
     userAccelerometerEvents.listen((UserAccelerometerEvent event) {
-      if (threshold < event.y) {
-        feed.maxAccelerometerValue = event.y;
+      if (threshold < event.z) {
+        feed.maxAccelerometerValue = event.z;
       }
     });
   }

@@ -9,9 +9,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'cancel_button.dart';
 import 'constants.dart';
 import 'play_audio.dart';
+import 'reusable_card.dart';
 
 // int number_a=0;
 // int pausenumber_a=0;
+double threshold = 3;
 
 PlayAudio beep = PlayAudio(
   duration: length,
@@ -95,6 +97,55 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(
+              child: ReusableContainer(
+                onPress: () {
+                  setState(() {});
+                },
+                color: kActiveCarColour,
+                cardChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Acceleration Thresold',
+                      style: kLabelTextStyle,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: <Widget>[
+                          Text(
+                            threshold.toString(),
+                            style: kLabelNumberStyle,
+                          ),
+
+                        ]),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        inactiveTrackColor: Color(0xFF8D8E98),
+                        activeTrackColor: Colors.white,
+                        thumbColor: Color(0xFFEB1555),
+                        overlayColor: Color(0x29EB1555),
+                        thumbShape:
+                            RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                        overlayShape:
+                            RoundSliderOverlayShape(overlayRadius: 30.0),
+                      ),
+                      child: Slider(
+                          value: threshold.toDouble(),
+                          min: 0.0,
+                          max: 100.0,
+                          onChanged: (double newValue) {
+                            setState(() {
+                              threshold = newValue;
+                            });
+                          }),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
                 child: Align(
               alignment: FractionalOffset.bottomCenter,
               child: CancelButton(),
@@ -127,9 +178,8 @@ class _MyHomePageState extends State<MyHomePage> {
             beep.cancelTimer = false;
 
             // number_a=1;
-            feed.trigger=true;
-            feed.cancelTimer=false;
-
+            feed.trigger = true;
+            feed.cancelTimer = false;
           }
           // Timer.periodic(length_accel, (Timer t)
           // {
@@ -153,8 +203,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    Timer.periodic(length, (Timer t) {beep.metronome();});
-    Timer.periodic(length, (Timer t) {feed.feedback();});
+    Timer.periodic(length, (Timer t) {
+      beep.metronome();
+    });
+    Timer.periodic(length, (Timer t) {
+      feed.feedback();
+    });
 
     userAccelerometerEvents.listen((UserAccelerometerEvent event) {
       if (threshold < event.z) {

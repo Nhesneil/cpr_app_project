@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Acceleration Thresold',
+                      'Acceleration Threshold',
                       style: kLabelTextStyle,
                     ),
                     Row(

@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     '$userAccelerometer',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 100.0,
+                      fontSize: 50.0,
                     ),
                   ),
                 ),
@@ -120,27 +120,24 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
 
                         ]),
-                    SliderTheme(
-                      data: SliderTheme.of(context).copyWith(
-                        inactiveTrackColor: Color(0xFF8D8E98),
-                        activeTrackColor: Colors.white,
-                        thumbColor: Color(0xFFEB1555),
-                        overlayColor: Color(0x29EB1555),
-                        thumbShape:
-                            RoundSliderThumbShape(enabledThumbRadius: 15.0),
-                        overlayShape:
-                            RoundSliderOverlayShape(overlayRadius: 30.0),
-                      ),
-                      child: Slider(
-                          value: threshold.toDouble(),
-                          min: 0.0,
-                          max: 100.0,
-                          onChanged: (double newValue) {
-                            setState(() {
-                              threshold = newValue;
-                            });
-                          }),
-                    )
+                    TextField(
+                      decoration: const InputDecoration(labelText: "Enter your number"),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                        TextInputFormatter.withFunction((oldValue, newValue) {
+                          try {
+                            final text = newValue.text;
+                            if (text.isNotEmpty) double.parse(text);
+                            return newValue;
+                          } catch (e) {}
+                          return oldValue;
+                        }),
+                      ],
+                      onChanged: (String number){
+                        threshold=double.parse(number);
+                      },// Only numbers can be entered
+                    ),
                   ],
                 ),
               ),

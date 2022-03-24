@@ -13,7 +13,7 @@ import 'reusable_card.dart';
 
 // int number_a=0;
 // int pausenumber_a=0;
-double threshold = 3;
+//double threshold = 3;
 
 PlayAudio beep = PlayAudio(
   duration: length,
@@ -81,70 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
-                child: Center(
-                  child: Text(
-                    '$userAccelerometer',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 100.0,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: ReusableContainer(
-                onPress: () {
-                  setState(() {});
-                },
-                color: kActiveCarColour,
-                cardChild: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Acceleration Thresold',
-                      style: kLabelTextStyle,
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: <Widget>[
-                          Text(
-                            threshold.toString(),
-                            style: kLabelNumberStyle,
-                          ),
 
-                        ]),
-                    SliderTheme(
-                      data: SliderTheme.of(context).copyWith(
-                        inactiveTrackColor: Color(0xFF8D8E98),
-                        activeTrackColor: Colors.white,
-                        thumbColor: Color(0xFFEB1555),
-                        overlayColor: Color(0x29EB1555),
-                        thumbShape:
-                            RoundSliderThumbShape(enabledThumbRadius: 15.0),
-                        overlayShape:
-                            RoundSliderOverlayShape(overlayRadius: 30.0),
-                      ),
-                      child: Slider(
-                          value: threshold.toDouble(),
-                          min: 0.0,
-                          max: 100.0,
-                          onChanged: (double newValue) {
-                            setState(() {
-                              threshold = newValue;
-                            });
-                          }),
-                    )
-                  ],
-                ),
-              ),
-            ),
             Expanded(
                 child: Align(
               alignment: FractionalOffset.bottomCenter,

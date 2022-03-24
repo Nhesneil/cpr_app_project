@@ -22,7 +22,7 @@ class InfoPage extends StatelessWidget {
                 FittedBox(
                   fit: BoxFit.fill,
                   child: Image.asset(
-                    'images/phone_position.png',
+                    'images/Phone_v1.png',
                     height:200,
                     width: 200,
                   ),

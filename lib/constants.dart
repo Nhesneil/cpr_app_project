@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+const double threshold=3.8;
 const length = Duration(milliseconds:500);
 const lengthFeedback = Duration(seconds:2);
 const feedbackDelay= Duration(seconds:1);
